@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -27,10 +28,12 @@ public class PlayerController : MonoBehaviour
     {
         if (transform.position.y < -5)
         {
+            /*
             transform.position = new Vector3(0, 1f, 0);
             p_rigidbody.velocity = Vector3.zero;
             p_rigidbody.angularVelocity = Vector3.zero;
-
+            */
+            ChangeScene();
         }
 
         float moveHorizontal = m_joystick.Horizontal;
@@ -41,5 +44,10 @@ public class PlayerController : MonoBehaviour
 
         p_rigidbody.AddForce(new Vector3(moveHorizontal,0,moveVertical));
         
+    }
+
+    public void ChangeScene()
+    {
+        SceneManager.LoadScene(1);
     }
 }
