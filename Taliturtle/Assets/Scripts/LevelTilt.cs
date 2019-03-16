@@ -13,47 +13,29 @@ public class LevelTilt : MonoBehaviour
     private float p_vertical;
     private Vector2 p_velocity = Vector2.zero;
 
-    private Vector3 p_originalPosition;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        p_originalPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-       
-    }
-
     void FixedUpdate()
     {
-        float inputX = m_joystick.Horizontal * m_maxRotation;
-        float inputY = m_joystick.Vertical * m_maxRotation;
+        float inputH = m_joystick.Horizontal * m_maxRotation;
+        float inputV = m_joystick.Vertical * m_maxRotation;
 
-        RotateAroundPlayer(inputX, inputY);
+        RotateAroundPlayer(inputH, inputV);
         //FixedRotationPointInput(inputX, inputY);
     }
 
-    void RotateAroundPlayer(float inputX, float inputY)
+    void RotateAroundPlayer(float inputH, float inputV)
     {
+
         //reset everything at first
         transform.position = Vector3.zero;
-        transform.rotation = new Quaternion();
+        transform.rotation = Quaternion.identity;
 
         transform.Translate(m_player.transform.position); //translate to playerposition so we can rotate the level around the player
 
-        transform.Rotate(new Vector3(0, 0, -1), inputX);
-        transform.Rotate(new Vector3(1, 0, 0), inputY);
+        transform.Rotate(new Vector3(0, 0, -1), inputH);
+        transform.Rotate(new Vector3(1, 0, 0), inputV);
 
-        /*
-         * transform.position = Vector3.zero;
-         * The line above wont work because of the rotation the level might be above the (0,0,0) vector. (Imagine the ball pushing the level over) 
-         */
         transform.Translate(-m_player.transform.position);
-        transform.Translate(p_originalPosition);
-
+        
     }
 
     void FixedRotationPointInput(float inputX, float inputY)
