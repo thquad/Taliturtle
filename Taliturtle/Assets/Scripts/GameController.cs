@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    public Goal m_goal;
     public GameObject m_player;
     public GameObject m_camera;
 
@@ -14,19 +13,20 @@ public class GameController : MonoBehaviour
     {
         p_lookAtPosition = new GameObject();
         p_lookAtPosition.transform.Translate(new Vector3(0, 1, 0));
-
-        //start animation
-        /*
-        m_camera.transform.Translate(new Vector3(0, 20, 0));
-        m_camera.GetComponent<CameraController>().m_smoothTime = 1;
-        */
-        m_camera.GetComponent<CameraController>().m_lookAt = p_lookAtPosition.transform;
-        
-
-        StartCoroutine(checkPlayerStart());
+        ResetLevel();
     }
 
-    IEnumerator checkPlayerStart()
+    public void ResetLevel()
+    {
+
+        //initialize everything to their startpositions
+        m_camera.GetComponent<CameraController>().m_lookAt = p_lookAtPosition.transform;
+        m_player.GetComponent<PlayerController>().RespawnPlayer();
+
+        StartCoroutine(CheckPlayerStart());
+    }
+
+    IEnumerator CheckPlayerStart()
     {
         Rigidbody playerBody = m_player.GetComponent<Rigidbody>();
         while (playerBody.velocity.y < 0.01)
@@ -34,6 +34,30 @@ public class GameController : MonoBehaviour
             yield return null;
         }
         m_camera.GetComponent<CameraController>().m_lookAt = m_player.transform;
-        m_camera.GetComponent<CameraController>().m_smoothTime = 0.2f;
+    }
+
+    private void Update()
+    {
+        //change stuff later to an observer pattern
+        PlayerController playerController = m_player.GetComponent<PlayerController>();
+        CameraController cameraController = m_camera.GetComponent<CameraController>();
+
+        if (playerController.isFinished())
+        {
+            if (playerController.isOutOfBounds())
+            {
+                Vector3 pos = cameraController.m_lookAt.position;
+                p_lookAtPosition.transform.position = Vector3.zero;
+                p_lookAtPosition.transform.rotation = Quaternion.identity;
+                p_lookAtPosition.transform.Translate(pos);
+
+                cameraController.m_lookAt = p_lookAtPosition.transform; //doesnt work?
+            }
+
+        }else if (playerController.isOutOfBounds())
+        {
+            ResetLevel();
+            playerController.setOutOfBounds(false);
+        }
     }
 }

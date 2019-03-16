@@ -10,28 +10,22 @@ public class PlayerController : MonoBehaviour
     public float m_speed;
     public Joystick m_joystick;
 
+    private bool p_finished = false;
+    private bool p_outOfBounds = false;
+    private Vector3 p_spawnPosition;
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         p_rigidbody = GetComponent<Rigidbody>();
         p_rigidbody.maxAngularVelocity = float.MaxValue;
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        p_spawnPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
     }
 
     // Update 
     private void FixedUpdate()
     {
-        if (transform.position.y < -5)
-        {
-            transform.position = new Vector3(0, 1f, 0);
-            p_rigidbody.velocity = Vector3.zero;
-            p_rigidbody.angularVelocity = Vector3.zero;
-        }
 
         float moveHorizontal = m_joystick.Horizontal;
         float moveVertical = m_joystick.Vertical;
@@ -43,8 +37,46 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    public void ChangeScene()
+    public void OnTriggerEnter(Collider other)
     {
-        SceneManager.LoadScene(1);
+        if (other.CompareTag("Finish"))
+        {
+            setFinished(true);
+        }
+
+        if (other.CompareTag("OutOfBounds"))
+        {
+            setOutOfBounds(true);
+        }
     }
+
+    public void RespawnPlayer()
+    {
+        transform.position = new Vector3(p_spawnPosition.x, p_spawnPosition.y, p_spawnPosition.z);
+        p_rigidbody.velocity = Vector3.zero;
+        p_rigidbody.angularVelocity = Vector3.zero;
+    }
+
+    //------------------------------------------------------------------- Getter Setter
+
+    public void setFinished(bool value)
+    {
+        p_finished = value;
+    }
+
+    public bool isFinished()
+    {
+        return p_finished;
+    }
+
+    public void setOutOfBounds(bool value)
+    {
+        p_outOfBounds = value;
+    }
+
+    public bool isOutOfBounds()
+    {
+        return p_outOfBounds;
+    }
+
 }
