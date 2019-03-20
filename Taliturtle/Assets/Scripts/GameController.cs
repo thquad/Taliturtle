@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -51,7 +52,15 @@ public class GameController : MonoBehaviour
                 p_lookAtPosition.transform.rotation = Quaternion.identity;
                 p_lookAtPosition.transform.Translate(pos);
 
-                cameraController.m_lookAt = p_lookAtPosition.transform; //doesnt work?
+                cameraController.m_lookAt = p_lookAtPosition.transform;
+
+                if (m_player.transform.position.y < -10)
+                {
+                    if (SceneManager.sceneCountInBuildSettings > SceneManager.GetActiveScene().buildIndex + 1)
+                        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                    else
+                        SceneManager.LoadScene(0);
+                }
             }
 
         }else if (playerController.isOutOfBounds())
