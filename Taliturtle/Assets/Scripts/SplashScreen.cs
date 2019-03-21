@@ -8,7 +8,10 @@ public class SplashScreen : MonoBehaviour
 {
     public GameObject m_turtle;
     public GameObject m_title;
+    public GameObject m_camera;
+    public GameObject m_buttonText;
     public Button m_button;
+    public float m_smoothTime;
 
     private Vector3 p_turtleOriginalPosition;
     private Quaternion p_turtleOriginalRotation;
@@ -17,7 +20,8 @@ public class SplashScreen : MonoBehaviour
     private Quaternion p_titleOriginalRotation;
 
     private bool gameStart;
-    private float velocity;
+    private float p_velocityTurtle;
+    private Vector3 p_velocityCamera;
 
     // Start is called before the first frame update
     void Start()
@@ -31,7 +35,8 @@ public class SplashScreen : MonoBehaviour
         m_button.onClick.AddListener(OnClickDropDown);
 
         gameStart = false;
-        velocity = 20;
+        p_velocityTurtle = 20;
+        p_velocityCamera = new Vector3();
     }
 
     // Update is called once per frame
@@ -39,32 +44,45 @@ public class SplashScreen : MonoBehaviour
     {
         if (gameStart)
         {
-            m_turtle.transform.Translate(0, velocity*Time.deltaTime, 0, Space.World);
+            //animation for letting the turtle fall down
+            m_turtle.transform.Translate(0, p_velocityTurtle*Time.deltaTime, 0, Space.World);
             m_turtle.transform.Rotate(70 * Time.deltaTime, -170*Time.deltaTime, 0, Space.World);
+            p_velocityTurtle -= Time.deltaTime*80;
 
-            velocity -= Time.deltaTime*80;
+            //follow the turtle with the camera after a certain time
+            if(p_velocityTurtle<-20)
+                m_camera.transform.position = Vector3.SmoothDamp(m_camera.transform.position, new Vector3(0,m_turtle.transform.position.y,-10), ref p_velocityCamera, m_smoothTime);
 
-            if(m_turtle.transform.position.y < -12)
+            //if camera doesnt see gui elements anymore, change scene
+            if (m_camera.transform.position.y < -15)
             {
                 if (SceneManager.sceneCountInBuildSettings > SceneManager.GetActiveScene().buildIndex + 1)
                     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
                 else
                     SceneManager.LoadScene(0);
             }
+            
+
         }
         else
         {
+            //Animation to wobble the title and turtle up and down
             float sinUpDown = Mathf.Sin(Time.time * 3);
             float sinTitleUpDown = Mathf.Sin((Time.time + 1.8f) * 3);
             TranslateGameObjects(m_turtle, p_turtleOriginalPosition, sinUpDown);
             TranslateGameObjects(m_title, p_titleOriginalPosition, sinTitleUpDown);
 
+            //animation to wobble the title and turtle left to right
             float sinLeftRight = Mathf.Sin(Time.time * 0.8f);
             RotateGameObjects(m_turtle, p_turtleOriginalRotation, sinLeftRight);
             RotateGameObjects(m_title, p_titleOriginalRotation, sinLeftRight);
 
+            //animation to scale the "drop down" button up and down
+            Vector3 buttonTextPosition = m_buttonText.transform.position;
+            m_buttonText.transform.position = new Vector3(0, 0, 0);
             float sinButtonScale = Mathf.Sin(Time.time * 3.1f);
-            m_button.transform.localScale = new Vector3(1, 1, 1) * (sinButtonScale * sinButtonScale * 0.05f + 1f);
+            m_buttonText.transform.localScale = new Vector3(0.7f, 0.8f, 1) * (sinButtonScale * sinButtonScale * 0.05f + 1f);
+            m_buttonText.transform.position = buttonTextPosition;
         }
     }
 

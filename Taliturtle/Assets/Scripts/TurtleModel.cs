@@ -23,9 +23,4 @@ public class TurtleModel : MonoBehaviour
         p_rotation.eulerAngles = angle;
         transform.rotation = Quaternion.Slerp(transform.rotation, p_rotation, m_rotationSpeed);
     }
-
-    private void Update()
-    {
-        
-    }
 }
