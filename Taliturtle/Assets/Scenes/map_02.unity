@@ -124,18 +124,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 960463692}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &912145622 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4901502640515314432, guid: 366aab82485a2b648964e9c07406e704,
-    type: 3}
-  m_PrefabInstance: {fileID: 960463692}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cecce8d3f549de045bea5fd79de9e7cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &960463692
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -286,6 +274,18 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300000, guid: d982f1607a064194d815667dcb5c02ad, type: 3}
+--- !u!114 &1446483492 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8906722848532886214, guid: 366aab82485a2b648964e9c07406e704,
+    type: 3}
+  m_PrefabInstance: {fileID: 960463692}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cecce8d3f549de045bea5fd79de9e7cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1790805053
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -359,7 +359,7 @@ GameObject:
   - component: {fileID: 2091650359}
   - component: {fileID: 2091650358}
   m_Layer: 0
-  m_Name: Level
+  m_Name: LevelControl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -378,9 +378,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_player: {fileID: 604960322}
-  m_joystick: {fileID: 912145622}
+  m_joystick: {fileID: 1446483492}
   m_maxRotation: 20
   m_smoothTime: 0.05
+  m_playerHasControl: 1
 --- !u!4 &2091650359
 Transform:
   m_ObjectHideFlags: 0

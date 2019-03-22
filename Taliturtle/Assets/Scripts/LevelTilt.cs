@@ -6,8 +6,10 @@ public class LevelTilt : MonoBehaviour
 {
     public GameObject m_player;
     public Joystick m_joystick;
-    public float m_maxRotation = 20;
     public float m_smoothTime = 0.05f;
+    public bool m_playerHasControl = true;
+
+    private float m_maxRotation = 30;
 
     private float p_horizontal;
     private float p_vertical;
@@ -18,7 +20,10 @@ public class LevelTilt : MonoBehaviour
         float inputH = m_joystick.Horizontal * m_maxRotation;
         float inputV = m_joystick.Vertical * m_maxRotation;
 
-        RotateAroundPlayer(inputH, inputV);
+        if (m_playerHasControl)
+            RotateAroundPlayer(inputH, inputV);
+        else
+            RotateAroundPlayer(0, 0);
         //FixedRotationPointInput(inputX, inputY);
     }
 

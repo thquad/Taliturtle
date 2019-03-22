@@ -8,13 +8,29 @@ public class GameController : MonoBehaviour
     public GameObject m_player;
     public GameObject m_camera;
 
+    public float m_startCamera = -20;
+    public float m_endCamera = 40;
+
     private GameObject p_lookAtPosition;
+    private float p_cameraSmoothTime;
+
+    private GameObject p_levelControl;
 
     public void Start()
     {
         p_lookAtPosition = new GameObject();
         p_lookAtPosition.transform.Translate(new Vector3(0, 1, 0));
-        ResetLevel();
+        p_levelControl = GameObject.Find("LevelControl");
+        p_levelControl.GetComponent<LevelTilt>().m_playerHasControl = false;
+
+        //prepare start animation
+        m_camera.transform.Translate(new Vector3(m_startCamera, 0, 0));
+        m_camera.GetComponent<CameraController>().m_lookAt = p_lookAtPosition.transform;
+        p_cameraSmoothTime = m_camera.GetComponent<CameraController>().m_smoothTime;
+        m_camera.GetComponent<CameraController>().m_smoothTime = p_cameraSmoothTime * 2;
+
+        StartCoroutine(WaitForASecond());
+
     }
 
     public void ResetLevel()
@@ -23,6 +39,7 @@ public class GameController : MonoBehaviour
         //initialize everything to their startpositions
         m_camera.GetComponent<CameraController>().m_lookAt = p_lookAtPosition.transform;
         m_player.GetComponent<PlayerController>().RespawnPlayer();
+        p_levelControl.GetComponent<LevelTilt>().m_playerHasControl = false;
 
         StartCoroutine(CheckPlayerStart());
     }
@@ -35,6 +52,14 @@ public class GameController : MonoBehaviour
             yield return null;
         }
         m_camera.GetComponent<CameraController>().m_lookAt = m_player.transform;
+        m_camera.GetComponent<CameraController>().m_smoothTime = p_cameraSmoothTime;
+        p_levelControl.GetComponent<LevelTilt>().m_playerHasControl = true;
+    }
+
+    IEnumerator WaitForASecond()
+    {
+        yield return new WaitForSeconds(0.5f);
+        ResetLevel();
     }
 
     private void Update()
@@ -45,21 +70,17 @@ public class GameController : MonoBehaviour
 
         if (playerController.isFinished())
         {
+            p_levelControl.GetComponent<LevelTilt>().m_playerHasControl = false;
+
             if (playerController.isOutOfBounds())
             {
-                Vector3 pos = cameraController.m_lookAt.position;
-                p_lookAtPosition.transform.position = Vector3.zero;
-                p_lookAtPosition.transform.rotation = Quaternion.identity;
-                p_lookAtPosition.transform.Translate(pos);
+                p_lookAtPosition.transform.position = new Vector3(m_endCamera, 0, 0);
+                m_camera.GetComponent<CameraController>().m_lookAt = p_lookAtPosition.transform;
+                m_camera.GetComponent<CameraController>().m_smoothTime = p_cameraSmoothTime * 4;
 
-                cameraController.m_lookAt = p_lookAtPosition.transform;
-
-                if (m_player.transform.position.y < -10)
+                if (m_camera.transform.position.x > m_endCamera/2)
                 {
-                    if (SceneManager.sceneCountInBuildSettings > SceneManager.GetActiveScene().buildIndex + 1)
-                        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-                    else
-                        SceneManager.LoadScene(0);
+                    StaticInformation.LoadNextLevel();
                 }
             }
 

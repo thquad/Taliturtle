@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
         p_rigidbody = GetComponent<Rigidbody>();
         p_rigidbody.maxAngularVelocity = float.MaxValue;
 
-        p_spawnPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        p_spawnPosition = new Vector3(0, 10, 0);
     }
 
     // Update 
