@@ -68,6 +68,9 @@ public class GameController : MonoBehaviour
         PlayerController playerController = m_player.GetComponent<PlayerController>();
         CameraController cameraController = m_camera.GetComponent<CameraController>();
 
+        if (Input.GetKeyDown(KeyCode.Escape))
+            MemoryCard.LoadMenu();
+
         if (playerController.isFinished())
         {
             p_levelControl.GetComponent<LevelTilt>().m_playerHasControl = false;
@@ -80,7 +83,7 @@ public class GameController : MonoBehaviour
 
                 if (m_camera.transform.position.x > m_endCamera/2)
                 {
-                    StaticInformation.LoadNextLevel();
+                    MemoryCard.LoadNextLevel();
                 }
             }
 

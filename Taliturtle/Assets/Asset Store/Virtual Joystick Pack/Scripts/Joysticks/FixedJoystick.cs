@@ -8,10 +8,12 @@ public class FixedJoystick : Joystick
 
     void Start()
     {
-        background.sizeDelta = new Vector2(Screen.width*0.8f, Screen.width*0.8f);
+        float size = (Screen.width < Screen.height) ? Screen.width : Screen.height;
+
+        background.sizeDelta = new Vector2(size * 0.8f, size * 0.8f);
 
         float x = background.transform.position.x;
-        float y = Screen.width/2f;
+        float y = size / 2f;
         float z = background.transform.position.z;
         background.transform.position = new Vector3(x, y, z);
 

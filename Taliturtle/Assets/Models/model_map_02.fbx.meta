@@ -1,27 +1,21 @@
 fileFormatVersion: 2
-guid: a08fe73dce887024fb110d3a4b49f663
+guid: fb2c53a53fa13154db898760411df63f
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
     100000: collision
-    100002: goal
-    100004: level
-    100006: //RootNode
+    100002: level
+    100004: //RootNode
     400000: collision
-    400002: goal
-    400004: level
-    400006: //RootNode
-    2100000: No Name
-    2100002: Material
+    400002: level
+    400004: //RootNode
+    2100000: Material
     2300000: collision
-    2300002: goal
-    2300004: level
+    2300002: level
     3300000: collision
-    3300002: goal
-    3300004: level
+    3300002: level
     4300000: collision
-    4300002: goal
-    4300004: level
+    4300002: level
   externalObjects: {}
   materials:
     importMaterials: 1

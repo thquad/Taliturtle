@@ -12,6 +12,7 @@ public class LoadingScreen : MonoBehaviour
     public GameObject m_lvlselectButtonImage;
     public GameObject m_contButtonImage;
     public Button m_continueButton;
+    public Button m_lvlselectButton;
     public float m_rotationSpeed;
     public float m_turtleSmoothTime;
     public float m_buttonSmoothTime;
@@ -22,7 +23,9 @@ public class LoadingScreen : MonoBehaviour
     private Vector3 p_cameraStart;
     private Vector3 p_cameraEnd;
 
-    private bool p_startLevel;
+    private bool p_nextScene;
+    private bool p_selectLevel;
+    private bool p_returnScreen;
 
     private Vector3 p_contButtonOutside;
     private Vector3 p_contButtonInside;
@@ -42,9 +45,13 @@ public class LoadingScreen : MonoBehaviour
         m_camera.transform.position = p_cameraStart;
         p_cameraEnd = new Vector3(0, -50, -10);
 
-        p_startLevel = false;
+        p_nextScene = false;
+        p_selectLevel = false;
+        p_returnScreen = false;
 
         m_continueButton.onClick.AddListener(OnClickContinue);
+        m_lvlselectButton.onClick.AddListener(OnClickLvlselect);
+        
 
         p_contButtonVelocity = new Vector3();
         p_contButtonInside = m_contButtonImage.transform.localPosition;
@@ -63,6 +70,13 @@ public class LoadingScreen : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //return key pressed?
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            p_nextScene = true;
+            p_returnScreen = true;
+        }
+
         //turtle animation
         float sinUpDown = Mathf.Sin(Time.time*3);
         float sinLeftRight = Mathf.Sin(Time.time * 1);
@@ -76,7 +90,7 @@ public class LoadingScreen : MonoBehaviour
         m_continueButton.transform.localScale = new Vector3(1, 1, 1) *(sinButtonScale * sinButtonScale * 0.05f + 0.4475f);
 
         //camera animation
-        if (p_startLevel)
+        if (p_nextScene)
         {
             m_camera.transform.position = Vector3.SmoothDamp(m_camera.transform.position, p_cameraEnd, ref p_cameraVelocity, m_turtleSmoothTime);
 
@@ -86,7 +100,13 @@ public class LoadingScreen : MonoBehaviour
 
             if (m_camera.transform.position.y < -15)
             {
-                StaticInformation.LoadCurrentProgress();
+                //choose wich scene to load
+                if (p_returnScreen)
+                    MemoryCard.LoadSplash();
+                else if (p_selectLevel)
+                    MemoryCard.LoadLevelSelection();
+                else
+                    MemoryCard.LoadSelectedLevel();
             }
         }
         else
@@ -101,6 +121,12 @@ public class LoadingScreen : MonoBehaviour
 
     private void OnClickContinue()
     {
-        p_startLevel = true;
+        p_nextScene = true;
+    }
+
+    private void OnClickLvlselect()
+    {
+        p_nextScene = true;
+        p_selectLevel = true;
     }
 }
