@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/map_03.unity
     guid: 949a851e0875df240acfbbdcf3869e5f
+  - enabled: 1
+    path: Assets/Scenes/menu_levelselectscreen.unity
+    guid: a0615d6e4afa51b4cbc6a0e42ae5eb08
   m_configObjects: {}

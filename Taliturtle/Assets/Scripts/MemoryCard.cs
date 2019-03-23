@@ -28,6 +28,11 @@ public static class MemoryCard
         return scenes;
     }
 
+    public static string GetScene()
+    {
+        return GetScene(PlayerPrefs.GetInt(selectedLevel, -1));
+    }
+
     public static string GetScene(int index)
     {
         if (index < levelSize)
@@ -139,6 +144,11 @@ public static class MemoryCard
             return highscoreDict;
         else
             return new Dictionary<string, Highscore>();
+    }
+
+    public static Highscore LoadHighScore()
+    {
+        return LoadHighScore(GetScene());
     }
 
     public static Highscore LoadHighScore(string mapName)
