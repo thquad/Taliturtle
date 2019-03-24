@@ -7,10 +7,10 @@ using UnityEngine.SceneManagement;
 
 public static class MemoryCard
 {
-    private static int levelSize = 3; //manually change with level amount, maybe fix later
-    private static string selectedLevel = "selectedLevel";
-    private static string unlockedLevel = "unlockedLevel";
-    private static string highscoreFile = "highscore";
+    public static int levelSize = 3; //manually change with level amount, maybe fix later
+    public static readonly string SELECTED_LEVEL = "selectedLevel";
+    public static readonly string UNLOCKED_LEVEL = "unlockedLevel";
+    public static readonly string HIGHSCORE_FILE = "highscore";
 
     //-------------------------------------------------------------------------------- Scene Management
 
@@ -30,7 +30,7 @@ public static class MemoryCard
 
     public static string GetScene()
     {
-        return GetScene(PlayerPrefs.GetInt(selectedLevel, -1));
+        return GetScene(PlayerPrefs.GetInt(SELECTED_LEVEL, -1));
     }
 
     public static string GetScene(int index)
@@ -50,10 +50,10 @@ public static class MemoryCard
     public static void LoadLevel(int index)
     {
 
-        PlayerPrefs.SetInt(selectedLevel, index);
+        PlayerPrefs.SetInt(SELECTED_LEVEL, index);
 
-        if (index > PlayerPrefs.GetInt(unlockedLevel, -1))
-            PlayerPrefs.SetInt(unlockedLevel, index);
+        if (index > PlayerPrefs.GetInt(UNLOCKED_LEVEL, -1))
+            PlayerPrefs.SetInt(UNLOCKED_LEVEL, index);
 
         SceneManager.LoadScene(GetScene(index));
     }
@@ -75,28 +75,54 @@ public static class MemoryCard
 
     public static void LoadNextLevel()
     {
-        int loadIndex = PlayerPrefs.GetInt(selectedLevel, -1);
+        int loadIndex = PlayerPrefs.GetInt(SELECTED_LEVEL, 0);
         loadIndex++;
 
-        //write the correct index in playerprefs
+        //check if end has been reached
         if (loadIndex >= levelSize)
-            loadIndex = -1;
-
-        string nextLevel = GetScene(loadIndex);
-
-        LoadLevel(loadIndex);
+            LoadMenu();
+        else
+            LoadLevel(loadIndex);
     }
 
     public static void LoadSelectedLevel()
     {
-        int loadIndex = PlayerPrefs.GetInt(selectedLevel, 0);
+        int loadIndex = PlayerPrefs.GetInt(SELECTED_LEVEL, 0);
 
         if (loadIndex < 0) {
             loadIndex = 0;
-            PlayerPrefs.SetInt(selectedLevel, loadIndex);
+            PlayerPrefs.SetInt(SELECTED_LEVEL, loadIndex);
         }
 
         SceneManager.LoadScene(GetScene(loadIndex));
+    }
+
+    public static int GetSelectedLevelIndex()
+    {
+        return PlayerPrefs.GetInt(SELECTED_LEVEL, 0);
+    }
+
+    public static void AddToSelectedLevel(int index)
+    {
+        int newIndex = PlayerPrefs.GetInt(SELECTED_LEVEL, 0);
+        newIndex += index;
+        newIndex = mod(newIndex, levelSize);
+        int unlockedLevel = PlayerPrefs.GetInt(UNLOCKED_LEVEL, 0);
+
+        if (newIndex > unlockedLevel)
+            newIndex = 0;
+
+        PlayerPrefs.SetInt(SELECTED_LEVEL, newIndex);
+    }
+
+    private static int mod(int x, int m)
+    {
+        return (x % m + m) % m;
+    }
+
+    public static int GetUnlockedLevelIndex()
+    {
+        return PlayerPrefs.GetInt(UNLOCKED_LEVEL, 0);
     }
 
     //-------------------------------------------------------------------------------- FileSystem
@@ -107,7 +133,7 @@ public static class MemoryCard
         highscoreDict[highscore.mapName] = highscore;
 
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = Path.Combine(Application.persistentDataPath, highscoreFile);
+        string path = Path.Combine(Application.persistentDataPath, HIGHSCORE_FILE);
         FileStream fileStream = new FileStream(path, FileMode.Create);
 
         try
@@ -123,7 +149,7 @@ public static class MemoryCard
     public static Dictionary<string, Highscore> LoadAllHighscores()
     {
         Dictionary<string, Highscore> highscoreDict = null;
-        string path = Path.Combine(Application.persistentDataPath, highscoreFile);
+        string path = Path.Combine(Application.persistentDataPath, HIGHSCORE_FILE);
 
         if (File.Exists(path))
         {

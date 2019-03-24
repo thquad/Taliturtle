@@ -83,7 +83,7 @@ public class LoadingScreen : MonoBehaviour
         m_turtle.transform.position = p_turtleOriginalPosition;
         m_turtle.transform.Translate(new Vector3(sinLeftRight, sinUpDown, 0));
         m_turtle.transform.Rotate(new Vector3(0,1,0), Time.deltaTime * m_rotationSpeed, Space.World);
-        m_turtle.transform.Rotate(new Vector3(1, 0, 0), sinUpDown, Space.World);
+        m_turtle.transform.Rotate(new Vector3(1, 0, 0), sinUpDown*0.5f, Space.World);
 
         //button animation
         float sinButtonScale = Mathf.Sin(Time.time * 3.1f);
@@ -116,7 +116,16 @@ public class LoadingScreen : MonoBehaviour
             //animate buttons to fly in
             m_contButtonImage.transform.localPosition = Vector3.SmoothDamp(m_contButtonImage.transform.localPosition, p_contButtonInside, ref p_contButtonVelocity, m_buttonSmoothTime);
             m_lvlselectButtonImage.transform.localPosition = Vector3.SmoothDamp(m_lvlselectButtonImage.transform.localPosition, p_lvlselectButtonInside, ref p_lvlselectButtonVelocity, m_buttonSmoothTime);
+
+            ScaleAnimateObject(0.6f,0.6f,m_contButtonImage);
+            ScaleAnimateObject(0.8f,0.8f,m_lvlselectButtonImage);
         }
+    }
+
+    private void ScaleAnimateObject(float scaleX, float scaleY, GameObject gameObject)
+    {
+        float sinButtonScale = Mathf.Sin(Time.time * 3.1f);
+        gameObject.transform.localScale = new Vector3(scaleX, scaleY, 1) * (sinButtonScale * sinButtonScale * 0.05f + 1f);
     }
 
     private void OnClickContinue()

@@ -13,12 +13,14 @@ public class PlayerController : MonoBehaviour
     private bool p_finished = false;
     private bool p_outOfBounds = false;
     private Vector3 p_spawnPosition;
+    private float p_velocityY;
 
     // Start is called before the first frame update
     void Awake()
     {
         p_rigidbody = GetComponent<Rigidbody>();
         p_rigidbody.maxAngularVelocity = float.MaxValue;
+        p_velocityY = 0;
 
         p_spawnPosition = new Vector3(0, 10, 0);
     }
@@ -34,7 +36,13 @@ public class PlayerController : MonoBehaviour
         moveVertical *= m_speed;
 
         p_rigidbody.AddForce(new Vector3(moveHorizontal,0,moveVertical));
-        
+
+        if (p_velocityY < -1f && p_rigidbody.velocity.y > 1f)
+        {
+            gameObject.GetComponent<AudioSource>().Play();
+        }
+
+        p_velocityY = p_rigidbody.velocity.y;
     }
 
     public void OnTriggerEnter(Collider other)

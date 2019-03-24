@@ -75,11 +75,9 @@ public class SplashScreen : MonoBehaviour
             RotateGameObjects(m_title, p_titleOriginalRotation, sinLeftRight);
 
             //animation to scale the "drop down" button up and down
-            Vector3 buttonTextPosition = m_buttonText.transform.position;
-            m_buttonText.transform.position = new Vector3(0, 0, 0);
             float sinButtonScale = Mathf.Sin(Time.time * 3.1f);
             m_buttonText.transform.localScale = new Vector3(0.7f, 0.8f, 1) * (sinButtonScale * sinButtonScale * 0.05f + 1f);
-            m_buttonText.transform.position = buttonTextPosition;
+
         }
     }
 
@@ -101,6 +99,7 @@ public class SplashScreen : MonoBehaviour
         if (!gameStart)
         {
             m_turtle.transform.Rotate(0, 0, -60);
+            gameObject.GetComponent<AudioSource>().Play();
         }
         gameStart = true;
         

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - OutOfBounds
   - LevelControl
+  - Audio
   layers:
   - Default
   - TransparentFX
