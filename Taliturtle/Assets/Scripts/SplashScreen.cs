@@ -30,7 +30,7 @@ public class SplashScreen : MonoBehaviour
     private Vector3 p_velocityCamera;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         p_turtleOriginalPosition = m_turtle.transform.position;
         p_turtleOriginalRotation = m_turtle.transform.rotation;
@@ -46,7 +46,7 @@ public class SplashScreen : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (gameStart)
         {

@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     private float p_velocityY;
 
     // Awake is called before anything else
-    void Awake()
+    private void Awake()
     {
         p_rigidbody = GetComponent<Rigidbody>();
         p_rigidbody.maxAngularVelocity = float.MaxValue;
