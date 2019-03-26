@@ -2,8 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
+
+/// <summary>
+/// The LoadingScreen class.
+/// Script used by the LoadingScreen / MenuScreen.
+/// Animates falling turtle and screen transitions.
+/// </summary>
 public class LoadingScreen : MonoBehaviour
 {
 
@@ -19,24 +24,28 @@ public class LoadingScreen : MonoBehaviour
 
     private Vector3 p_turtleOriginalPosition;
 
+    //camera values for transition animation between scenes
     private Vector3 p_cameraVelocity;
     private Vector3 p_cameraStart;
     private Vector3 p_cameraEnd;
 
+    //bools for screen change
     private bool p_nextScene;
     private bool p_selectLevel;
     private bool p_returnScreen;
 
+    //Continue button animation values
     private Vector3 p_contButtonOutside;
     private Vector3 p_contButtonInside;
     private Vector3 p_contButtonVelocity;
 
+    //level select button animation values
     private Vector3 p_lvlselectButtonOutside;
     private Vector3 p_lvlselectButtonInside;
     private Vector3 p_lvlselectButtonVelocity;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         p_turtleOriginalPosition = m_turtle.transform.position;
 
@@ -52,7 +61,7 @@ public class LoadingScreen : MonoBehaviour
         m_continueButton.onClick.AddListener(OnClickContinue);
         m_lvlselectButton.onClick.AddListener(OnClickLvlselect);
         
-
+        //initialise everything outside the screen
         p_contButtonVelocity = new Vector3();
         p_contButtonInside = m_contButtonImage.transform.localPosition;
         p_lvlselectButtonVelocity = new Vector3();
@@ -68,7 +77,7 @@ public class LoadingScreen : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         //return key pressed?
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -111,28 +120,42 @@ public class LoadingScreen : MonoBehaviour
         }
         else
         {
+            //animate camera
             m_camera.transform.position = Vector3.SmoothDamp(m_camera.transform.position, new Vector3(0,0,-10), ref p_cameraVelocity, m_turtleSmoothTime);
 
             //animate buttons to fly in
             m_contButtonImage.transform.localPosition = Vector3.SmoothDamp(m_contButtonImage.transform.localPosition, p_contButtonInside, ref p_contButtonVelocity, m_buttonSmoothTime);
             m_lvlselectButtonImage.transform.localPosition = Vector3.SmoothDamp(m_lvlselectButtonImage.transform.localPosition, p_lvlselectButtonInside, ref p_lvlselectButtonVelocity, m_buttonSmoothTime);
 
+            //animate buttons to wobble
             ScaleAnimateObject(0.6f,0.6f,m_contButtonImage);
             ScaleAnimateObject(0.8f,0.8f,m_lvlselectButtonImage);
         }
     }
 
+    /// <summary>
+    /// Method for button wobble.
+    /// </summary>
+    /// <param name="scaleX">Original x scale of object.</param>
+    /// <param name="scaleY">Original y scale of object.</param>
+    /// <param name="gameObject">Gameobject to wobble around.</param>
     private void ScaleAnimateObject(float scaleX, float scaleY, GameObject gameObject)
     {
         float sinButtonScale = Mathf.Sin(Time.time * 3.1f);
         gameObject.transform.localScale = new Vector3(scaleX, scaleY, 1) * (sinButtonScale * sinButtonScale * 0.05f + 1f);
     }
 
+    /// <summary>
+    /// Continue button event method.
+    /// </summary>
     private void OnClickContinue()
     {
         p_nextScene = true;
     }
 
+    /// <summary>
+    /// Levelselect button event method.
+    /// </summary>
     private void OnClickLvlselect()
     {
         p_nextScene = true;

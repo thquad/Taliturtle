@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
+/// <summary>
+/// The SplashScreen class.
+/// Script for the splashscreen. Animates elements on screen and transitions to new screen.
+/// </summary>
 public class SplashScreen : MonoBehaviour
 {
     public GameObject m_turtle;
@@ -13,12 +16,15 @@ public class SplashScreen : MonoBehaviour
     public Button m_button;
     public float m_smoothTime;
 
+    //Turtle values
     private Vector3 p_turtleOriginalPosition;
     private Quaternion p_turtleOriginalRotation;
 
+    //Title values
     private Vector3 p_titleOriginalPosition;
     private Quaternion p_titleOriginalRotation;
 
+    //Values for events and animation
     private bool gameStart;
     private float p_velocityTurtle;
     private Vector3 p_velocityCamera;
@@ -82,23 +88,39 @@ public class SplashScreen : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Translates given object up or down.
+    /// </summary>
+    /// <param name="gameObject">Object to translate.</param>
+    /// <param name="originalPosition">Original position of the object.</param>
+    /// <param name="value">Translate amount.</param>
     public void TranslateGameObjects(GameObject gameObject, Vector3 originalPosition, float value)
     {
         gameObject.transform.position = originalPosition;
         gameObject.transform.Translate(0, value * 0.1f, 0, Space.World);
     }
 
+    /// <summary>
+    /// Rotates given object left or right.
+    /// </summary>
+    /// <param name="gameObject">Object to translate.</param>
+    /// <param name="originalRotation">Original rotation of the object.</param>
+    /// <param name="value">Angle amount.</param>
     public void RotateGameObjects(GameObject gameObject, Quaternion originalRotation, float value)
     {
         gameObject.transform.rotation = originalRotation;
         gameObject.transform.Rotate(0, value * 10, 0, Space.World);
     }
 
+    /// <summary>
+    /// Click event to transition to next screen.
+    /// </summary>
     public void OnClickDropDown()
     {
 
         if (!gameStart)
         {
+            //rotate turtle and play sound once
             m_turtle.transform.Rotate(0, 0, -60);
             gameObject.GetComponent<AudioSource>().Play();
         }

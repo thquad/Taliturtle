@@ -5,15 +5,23 @@ using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// The static MemoryCard class.
+/// Used for loading/saving maps/scenes/highscores.
+/// </summary>
 public static class MemoryCard
 {
-    public static int levelSize = 14; //manually change with level amount, maybe fix later
+    public static readonly int levelSize = 14; //manually change with level amount, maybe fix later
     public static readonly string SELECTED_LEVEL = "selectedLevel";
     public static readonly string UNLOCKED_LEVEL = "unlockedLevel";
     public static readonly string HIGHSCORE_FILE = "highscore";
 
     //-------------------------------------------------------------------------------- Scene Management
 
+    /// <summary>
+    /// Generates a Dictionary with the names of all scenes and returns it.
+    /// </summary>
+    /// <returns>Dictionary containing the names of all scenes.</returns>
     public static Dictionary<int,string> GetScenes()
     {
         Dictionary<int, string> scenes = new Dictionary<int, string>();
@@ -39,13 +47,24 @@ public static class MemoryCard
         return scenes;
     }
 
+    /// <summary>
+    /// Gets name of the currently selected scene.
+    /// </summary>
+    /// <returns>Name of the currently selected scene.</returns>
     public static string GetScene()
     {
-        return GetScene(PlayerPrefs.GetInt(SELECTED_LEVEL, -1));
+        return GetScene(PlayerPrefs.GetInt(SELECTED_LEVEL, 0));
     }
 
+    /// <summary>
+    /// Gets name of specific scene.
+    /// Returns loading menu if index is larger than level amount.
+    /// </summary>
+    /// <param name="index">Index of the scene.</param>
+    /// <returns>Name of the scene.</returns>
     public static string GetScene(int index)
     {
+
         if (index < levelSize)
         {
             Dictionary<int, string> myDictionary = GetScenes();
@@ -58,32 +77,48 @@ public static class MemoryCard
         }
     }
 
+    /// <summary>
+    /// Loads the specific level.
+    /// </summary>
+    /// <param name="index">Index of the scene.</param>
     public static void LoadLevel(int index)
     {
 
         PlayerPrefs.SetInt(SELECTED_LEVEL, index);
 
-        if (index > PlayerPrefs.GetInt(UNLOCKED_LEVEL, -1))
+        if (index > PlayerPrefs.GetInt(UNLOCKED_LEVEL, 0))
             PlayerPrefs.SetInt(UNLOCKED_LEVEL, index);
 
         SceneManager.LoadScene(GetScene(index));
     }
 
+    /// <summary>
+    /// Loads the loading menu.
+    /// </summary>
     public static void LoadMenu()
     {
         SceneManager.LoadScene(GetScene(-1));
     }
 
+    /// <summary>
+    /// Loads the splashscreen.
+    /// </summary>
     public static void LoadSplash()
     {
         SceneManager.LoadScene(GetScene(-2));
     }
 
+    /// <summary>
+    /// Loads the level selection screen.
+    /// </summary>
     public static void LoadLevelSelection()
     {
         SceneManager.LoadScene(GetScene(-3));
     }
 
+    /// <summary>
+    /// Loads the next level.
+    /// </summary>
     public static void LoadNextLevel()
     {
         int loadIndex = PlayerPrefs.GetInt(SELECTED_LEVEL, 0);
@@ -96,6 +131,9 @@ public static class MemoryCard
             LoadLevel(loadIndex);
     }
 
+    /// <summary>
+    /// Loads the currently selected level.
+    /// </summary>
     public static void LoadSelectedLevel()
     {
         int loadIndex = PlayerPrefs.GetInt(SELECTED_LEVEL, 0);
@@ -108,17 +146,25 @@ public static class MemoryCard
         SceneManager.LoadScene(GetScene(loadIndex));
     }
 
+    /// <summary>
+    /// Gets the index of the currently selected level.
+    /// </summary>
+    /// <returns></returns>
     public static int GetSelectedLevelIndex()
     {
         return PlayerPrefs.GetInt(SELECTED_LEVEL, 0);
     }
 
-    public static void AddToSelectedLevel(int index)
+    /// <summary>
+    /// Increment or decrement the currently selected level.
+    /// </summary>
+    /// <param name="add">Value to add.</param>
+    public static void AddToSelectedLevel(int add)
     {
         int newIndex = PlayerPrefs.GetInt(SELECTED_LEVEL, 0);
-        int unlockedLevel = PlayerPrefs.GetInt(UNLOCKED_LEVEL, 0);
+        int unlockedLevel = PlayerPrefs.GetInt(UNLOCKED_LEVEL, 0)+1;
 
-        newIndex += index;
+        newIndex += add;
         newIndex = newIndex%unlockedLevel;
 
         //wrap around like normal modulo
@@ -132,12 +178,10 @@ public static class MemoryCard
         PlayerPrefs.SetInt(SELECTED_LEVEL, newIndex);
     }
 
-    private static int mod(int x, int m)
-    {
-
-        return (x % m + m) % m;
-    }
-
+    /// <summary>
+    /// Getter for unlocked levels.
+    /// </summary>
+    /// <returns>Unlocked levels.</returns>
     public static int GetUnlockedLevelIndex()
     {
         return PlayerPrefs.GetInt(UNLOCKED_LEVEL, 0);
@@ -145,6 +189,10 @@ public static class MemoryCard
 
     //-------------------------------------------------------------------------------- FileSystem
 
+    /// <summary>
+    /// Saves the given highscore in a file.
+    /// </summary>
+    /// <param name="highscore">Highscore to save.</param>
     public static void SaveHighscore(Highscore highscore)
     {
         Dictionary<string, Highscore> highscoreDict = LoadAllHighscores();
@@ -164,6 +212,10 @@ public static class MemoryCard
         }
     }
 
+    /// <summary>
+    /// Reads the file and returns a Dictionary with all the saved highscores.
+    /// </summary>
+    /// <returns>Dictionary with all saved highscores.</returns>
     public static Dictionary<string, Highscore> LoadAllHighscores()
     {
         Dictionary<string, Highscore> highscoreDict = null;
@@ -190,11 +242,20 @@ public static class MemoryCard
             return new Dictionary<string, Highscore>();
     }
 
+    /// <summary>
+    /// Loads highscore of currently selected level.
+    /// </summary>
+    /// <returns>Highscore of currently selected level.</returns>
     public static Highscore LoadHighScore()
     {
         return LoadHighScore(GetScene());
     }
 
+    /// <summary>
+    /// Loads the highscore with the scene name or "map name".
+    /// </summary>
+    /// <param name="mapName">Which map to load.</param>
+    /// <returns>Highscore of the map.</returns>
     public static Highscore LoadHighScore(string mapName)
     {
         Dictionary<string, Highscore> highscoreDict = LoadAllHighscores();
@@ -206,6 +267,9 @@ public static class MemoryCard
         return new Highscore(mapName);
     }
 
+    /// <summary>
+    /// Checks if a savestate exists and resets the PlayerPrefs.
+    /// </summary>
     public static void CheckNewGame()
     {
         string path = Path.Combine(Application.persistentDataPath, HIGHSCORE_FILE);
