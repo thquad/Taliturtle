@@ -182,9 +182,9 @@ public class LevelSelect : MonoBehaviour
         float bestTime = MemoryCard.LoadHighScore().timeInSeconds;
 
         if(bestTime!=0)
-            p_textString = "level " + (index+1) + "\nbest time " + bestTime.ToString("f2") + "s";
+            p_textString = "level " + (index+1) + " / " + MemoryCard.levelSize + "\nbest time " + bestTime.ToString("f2") + "s";
         else
-            p_textString = "level " + (index + 1) + "\nbest time --.--s";
+            p_textString = "level " + (index + 1) + " / " + MemoryCard.levelSize + "\nbest time --.--s";
     }
 
     /// <summary>

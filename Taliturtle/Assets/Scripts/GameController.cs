@@ -74,7 +74,7 @@ public class GameController : MonoBehaviour
     /// Checks if the player has touched ground and then starts the game.
     /// </summary>
     /// <returns>IEnumerator, which is needed for Courotines.</returns>
-    IEnumerator CheckPlayerStart()
+    private IEnumerator CheckPlayerStart()
     {
         //<0.01f means that the player is still falling
         Rigidbody playerBody = m_player.GetComponent<Rigidbody>();
@@ -93,7 +93,7 @@ public class GameController : MonoBehaviour
     /// Waits for some time.
     /// </summary>
     /// <returns>IEnumerator, which is needed for Courotines.</returns>
-    IEnumerator WaitForASecond()
+    private IEnumerator WaitForASecond()
     {
         yield return new WaitForSeconds(0.5f);
         ResetLevel();
@@ -119,7 +119,7 @@ public class GameController : MonoBehaviour
             //update the highscore if the player was faster
             if (p_timeInSeconds < p_bestTimeInSeconds || p_bestTimeInSeconds == 0)
             {
-                MemoryCard.SaveHighscore(new Highscore(MemoryCard.GetScene(),p_timeInSeconds)); //TODO doesnt work
+                MemoryCard.SaveHighscore(new Highscore(MemoryCard.GetScene(),p_timeInSeconds));
                 m_bestTime.text = p_timeInSeconds.ToString("f2"); 
             }
 

@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public static class MemoryCard
 {
-    public static readonly int levelSize = 14; //manually change with level amount, maybe fix later
+    public static readonly int levelSize = 15; //manually change with level amount, maybe fix later
     public static readonly string SELECTED_LEVEL = "selectedLevel";
     public static readonly string UNLOCKED_LEVEL = "unlockedLevel";
     public static readonly string HIGHSCORE_FILE = "highscore";
@@ -31,18 +31,19 @@ public static class MemoryCard
         scenes[-1] = "menu_loadingscreen";
         scenes[0] = "map_04";
         scenes[1] = "map_05";
-        scenes[2] = "map_03";
-        scenes[3] = "map_08";
-        scenes[4] = "map_06";
-        scenes[5] = "map_07";
-        scenes[6] = "map_09";
-        scenes[7] = "map_11";
-        scenes[8] = "map_12";
-        scenes[9] = "map_13";
-        scenes[10] = "map_14";
-        scenes[11] = "map_15";
-        scenes[12] = "map_16";
-        scenes[13] = "map_10";
+        scenes[2] = "map_02";
+        scenes[3] = "map_03";
+        scenes[4] = "map_08";
+        scenes[5] = "map_06";
+        scenes[6] = "map_07";
+        scenes[7] = "map_09";
+        scenes[8] = "map_11";
+        scenes[9] = "map_12";
+        scenes[10] = "map_13";
+        scenes[11] = "map_14";
+        scenes[12] = "map_15";
+        scenes[13] = "map_16";
+        scenes[14] = "map_10";
 
         return scenes;
     }

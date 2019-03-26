@@ -8,11 +8,10 @@ using UnityEngine;
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
-
-    private Rigidbody p_rigidbody;
     public float m_speed;
     public Joystick m_joystick;
 
+    private Rigidbody p_rigidbody;
     private bool p_finished = false;
     private bool p_outOfBounds = false;
     private Vector3 p_spawnPosition;
