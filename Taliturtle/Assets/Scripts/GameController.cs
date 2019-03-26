@@ -27,7 +27,7 @@ public class GameController : MonoBehaviour
     {
         p_lookAtPosition = new GameObject();
         p_lookAtPosition.transform.Translate(new Vector3(0, 1, 0));
-        p_levelControl = GameObject.Find("LevelControl");
+        p_levelControl = GameObject.FindWithTag("LevelControl");
         p_levelControl.GetComponent<LevelTilt>().m_playerHasControl = false;
         p_timeInSeconds = 0;
 

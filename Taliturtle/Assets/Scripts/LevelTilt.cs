@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class LevelTilt : MonoBehaviour
 {
-    public GameObject m_player;
-    public Joystick m_joystick;
+    
     public float m_smoothTime = 0.05f;
     public bool m_playerHasControl = true;
+
+    private GameObject m_player;
+    private Joystick m_joystick;
 
     private float m_maxRotation = 30;
 
@@ -15,8 +17,15 @@ public class LevelTilt : MonoBehaviour
     private float p_vertical;
     private Vector2 p_velocity = Vector2.zero;
 
+    private void Start()
+    {
+        m_player = GameObject.Find("Player");
+        m_joystick = GameObject.Find("Fixed Joystick").GetComponent<Joystick>();
+    }
+
     void FixedUpdate()
     {
+        
         float inputH = m_joystick.Horizontal * m_maxRotation;
         float inputV = m_joystick.Vertical * m_maxRotation;
 

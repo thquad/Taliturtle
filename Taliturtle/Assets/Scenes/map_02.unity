@@ -51,7 +51,7 @@ LightmapSettings:
     m_IndirectOutputScale: 1
     m_AlbedoBoost: 1
     m_EnvironmentLightingMode: 0
-    m_EnableBakedLightmaps: 1
+    m_EnableBakedLightmaps: 0
     m_EnableRealtimeLightmaps: 1
   m_LightmapEditorSettings:
     serializedVersion: 10
@@ -112,12 +112,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &604960322 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4901502641633574496, guid: 366aab82485a2b648964e9c07406e704,
-    type: 3}
-  m_PrefabInstance: {fileID: 960463692}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &960463692
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -251,18 +245,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1258944769}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1446483492 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8906722848532886214, guid: 366aab82485a2b648964e9c07406e704,
-    type: 3}
-  m_PrefabInstance: {fileID: 960463692}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cecce8d3f549de045bea5fd79de9e7cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2091650357
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,7 +257,7 @@ GameObject:
   - component: {fileID: 2091650358}
   m_Layer: 0
   m_Name: LevelControl
-  m_TagString: Untagged
+  m_TagString: LevelControl
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -292,8 +274,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02d9d7bd251180e4dac3a9dd4cda2114, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_player: {fileID: 604960322}
-  m_joystick: {fileID: 1446483492}
   m_smoothTime: 0.05
   m_playerHasControl: 1
 --- !u!4 &2091650359

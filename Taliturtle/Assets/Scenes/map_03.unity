@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 2009201098}
   m_Layer: 0
   m_Name: LevelControl
-  m_TagString: Untagged
+  m_TagString: LevelControl
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -219,8 +219,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02d9d7bd251180e4dac3a9dd4cda2114, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_player: {fileID: 2009246476}
-  m_joystick: {fileID: 2009246475}
   m_smoothTime: 0.05
   m_playerHasControl: 1
 --- !u!1001 &2009246474
@@ -292,21 +290,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 366aab82485a2b648964e9c07406e704, type: 3}
---- !u!114 &2009246475 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8906722848532886214, guid: 366aab82485a2b648964e9c07406e704,
-    type: 3}
-  m_PrefabInstance: {fileID: 2009246474}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cecce8d3f549de045bea5fd79de9e7cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1 &2009246476 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4901502641633574496, guid: 366aab82485a2b648964e9c07406e704,
-    type: 3}
-  m_PrefabInstance: {fileID: 2009246474}
-  m_PrefabAsset: {fileID: 0}

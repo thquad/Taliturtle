@@ -56,7 +56,8 @@ public class SplashScreen : MonoBehaviour
             //if camera doesnt see gui elements anymore, change scene
             if (m_camera.transform.position.y < -15)
             {
-                SceneManager.LoadScene("menu_loadingscreen");
+                MemoryCard.CheckNewGame();
+                MemoryCard.LoadMenu();
             }
             
 

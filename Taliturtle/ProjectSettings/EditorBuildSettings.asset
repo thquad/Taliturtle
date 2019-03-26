@@ -23,4 +23,43 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/menu_levelselectscreen.unity
     guid: a0615d6e4afa51b4cbc6a0e42ae5eb08
+  - enabled: 1
+    path: Assets/Scenes/map_04.unity
+    guid: eaf394a630fcb244990035e6539b01cc
+  - enabled: 1
+    path: Assets/Scenes/map_05.unity
+    guid: 53784a00d06b8ca4184ff6f195740add
+  - enabled: 1
+    path: Assets/Scenes/map_10.unity
+    guid: 8a3d54a75daef054e91eb292b50d7d1a
+  - enabled: 1
+    path: Assets/Scenes/map_11.unity
+    guid: d1a3df90a7240d34e8cb44f5a3d498b4
+  - enabled: 1
+    path: Assets/Scenes/map_12.unity
+    guid: ff4ca4a59d5d1b64aa0580a31b8447e6
+  - enabled: 1
+    path: Assets/Scenes/map_13.unity
+    guid: 43ec4e15965de3146a8561fb1057602b
+  - enabled: 1
+    path: Assets/Scenes/map_14.unity
+    guid: 98586ca2fd799d341bfa98dd6a81d49b
+  - enabled: 1
+    path: Assets/Scenes/map_15.unity
+    guid: bea886ea573600646943d4703d807d32
+  - enabled: 1
+    path: Assets/Scenes/map_16.unity
+    guid: b00a93fcbe8efce409c38f1e7dc80d96
+  - enabled: 1
+    path: Assets/Scenes/map_06.unity
+    guid: 064348ba19b64d94a8f077b005847aa4
+  - enabled: 1
+    path: Assets/Scenes/map_07.unity
+    guid: 59286fbc426bd484a8bd0b609bbef96b
+  - enabled: 1
+    path: Assets/Scenes/map_08.unity
+    guid: 17b615cf98190f64b9f977eca204d20c
+  - enabled: 1
+    path: Assets/Scenes/map_09.unity
+    guid: 1ade31ac68080564398f9439311ed326
   m_configObjects: {}

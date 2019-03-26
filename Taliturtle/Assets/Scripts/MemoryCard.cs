@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public static class MemoryCard
 {
-    public static int levelSize = 3; //manually change with level amount, maybe fix later
+    public static int levelSize = 14; //manually change with level amount, maybe fix later
     public static readonly string SELECTED_LEVEL = "selectedLevel";
     public static readonly string UNLOCKED_LEVEL = "unlockedLevel";
     public static readonly string HIGHSCORE_FILE = "highscore";
@@ -21,9 +21,20 @@ public static class MemoryCard
         scenes[-3] = "menu_levelselectscreen";
         scenes[-2] = "menu_splashscreen";
         scenes[-1] = "menu_loadingscreen";
-        scenes[0] = "map_01";
-        scenes[1] = "map_02";
+        scenes[0] = "map_04";
+        scenes[1] = "map_05";
         scenes[2] = "map_03";
+        scenes[3] = "map_08";
+        scenes[4] = "map_06";
+        scenes[5] = "map_07";
+        scenes[6] = "map_09";
+        scenes[7] = "map_11";
+        scenes[8] = "map_12";
+        scenes[9] = "map_13";
+        scenes[10] = "map_14";
+        scenes[11] = "map_15";
+        scenes[12] = "map_16";
+        scenes[13] = "map_10";
 
         return scenes;
     }
@@ -105,10 +116,16 @@ public static class MemoryCard
     public static void AddToSelectedLevel(int index)
     {
         int newIndex = PlayerPrefs.GetInt(SELECTED_LEVEL, 0);
-        newIndex += index;
-        newIndex = mod(newIndex, levelSize);
         int unlockedLevel = PlayerPrefs.GetInt(UNLOCKED_LEVEL, 0);
 
+        newIndex += index;
+        newIndex = newIndex%unlockedLevel;
+
+        //wrap around like normal modulo
+        if (newIndex < 0)
+            newIndex = unlockedLevel + newIndex;
+
+        //wrap around 
         if (newIndex > unlockedLevel)
             newIndex = 0;
 
@@ -117,6 +134,7 @@ public static class MemoryCard
 
     private static int mod(int x, int m)
     {
+
         return (x % m + m) % m;
     }
 
@@ -186,5 +204,16 @@ public static class MemoryCard
         }
 
         return new Highscore(mapName);
+    }
+
+    public static void CheckNewGame()
+    {
+        string path = Path.Combine(Application.persistentDataPath, HIGHSCORE_FILE);
+
+        if (!File.Exists(path))
+        {
+            PlayerPrefs.SetInt(SELECTED_LEVEL, 0);
+            PlayerPrefs.SetInt(UNLOCKED_LEVEL, 0);
+        }
     }
 }

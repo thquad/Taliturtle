@@ -9,6 +9,7 @@ public class LevelSelect : MonoBehaviour
     public GameObject m_camera;
     public GameObject m_continuePlane;
     public GameObject m_levelselectPlane;
+    public Text m_text;
 
     private Vector3 p_continuePlaneScale;
     private Vector3 p_levelselectPlaneScale;
@@ -25,18 +26,24 @@ public class LevelSelect : MonoBehaviour
     private Vector3 p_cameraOutsidePosition;
     private float p_cameraSmoothTime;
 
-    private bool p_nextScene;
-    private bool p_returnScene;
+    private Vector3 p_mapMiddlePosition = new Vector3(0, 1, 5);
+    private Vector3 p_mapLeftPosition = new Vector3(-20, 1, 5);
+    private Vector3 p_mapRightPosition = new Vector3(20, 1, 5);
+    private Vector3 p_mapGoToThisPosition = new Vector3(0, 1, 5);
+    private float p_mapSmoothTime = 0.1f;
+    private Vector3 p_mapVelocity = new Vector3();
+
+    private bool p_nextScene = false;
+    private bool p_returnScene = false;
+
+    private string p_textString = "";
 
     private void Start()
     {
         p_continuePlaneScale = m_continuePlane.transform.localScale;
         p_levelselectPlaneScale = m_levelselectPlane.transform.localScale;
 
-
         m_contButton.onClick.AddListener(OnClickContinue);
-        p_nextScene = false;
-        p_returnScene = false;
         p_cameraInsidePosition = m_camera.transform.position;
         m_camera.transform.Translate(-20, 0, 0);
         p_cameraOutsidePosition = m_camera.transform.position;
@@ -84,11 +91,16 @@ public class LevelSelect : MonoBehaviour
                 p_lastLevelChange = Time.time;
 
                 if (direction.x < 0)
+                {
                     MemoryCard.AddToSelectedLevel(+1);
+                    p_mapGoToThisPosition = p_mapLeftPosition;
+                }
                 else
+                {
                     MemoryCard.AddToSelectedLevel(-1);
-
-                LoadPreview(MemoryCard.GetSelectedLevelIndex());
+                    p_mapGoToThisPosition = p_mapRightPosition;
+                }
+                    
             }
         }
 
@@ -101,22 +113,47 @@ public class LevelSelect : MonoBehaviour
         }
 
         AnimateScreenTransitions();
+        AnimateMapTransition();
         AnimateScreen();
+
+        if(p_currentMapPreview.transform.position.x < -19 || p_currentMapPreview.transform.position.x > 19)
+        {
+            LoadPreview(MemoryCard.GetSelectedLevelIndex());
+        }
     }
 
     private void LoadPreview(int index)
     {
 
+        float x = 0;
+
         if (p_currentMapPreview != null)
+        {
+            x = p_currentMapPreview.transform.position.x; //save the map position before we instantiate another map
             Destroy(p_currentMapPreview);
+        }
+            
 
         string sceneName = MemoryCard.GetScene(index);
         p_currentMapPreview = (GameObject)Instantiate(Resources.Load("prefab_" + sceneName));
-
         p_currentMapPreview.transform.localScale = new Vector3(1, 1, 1) * 0.5f;
         p_currentMapPreview.transform.Rotate(new Vector3(1, 0, 0), -50, Space.World);
-        p_currentMapPreview.transform.Translate(new Vector3(0, 1, 5), Space.World);
-        
+
+        if (x > 0)
+        {
+            p_currentMapPreview.transform.position = p_mapLeftPosition;
+            p_currentMapPreview.transform.Translate(2, 0, 0,Space.World); //translate it one unit over so the if statement for loading a new map wont be triggered
+        }
+        else
+        {
+            p_currentMapPreview.transform.position = p_mapRightPosition;
+            p_currentMapPreview.transform.Translate(-2, 0, 0, Space.World);
+        }
+
+        p_mapGoToThisPosition = p_mapMiddlePosition;
+
+        float bestTime = MemoryCard.LoadHighScore().timeInSeconds;
+        p_textString = "level " + index + "\nbest time " + bestTime.ToString("f2") + "s";
     }
 
     private void AnimateScreenTransitions()
@@ -129,12 +166,22 @@ public class LevelSelect : MonoBehaviour
             gotoPosition = p_cameraInsidePosition;
 
         m_camera.transform.localPosition = Vector3.SmoothDamp(m_camera.transform.position, gotoPosition, ref p_cameraVelocity, p_cameraSmoothTime);
+
+        if (p_cameraVelocity.magnitude < 1f)
+            m_text.text = p_textString;
+        else
+            m_text.text = "";
     }
 
     private void AnimateScreen()
     {
         p_currentMapPreview.transform.Rotate(new Vector3(0, 1, 0), Time.deltaTime * 50);
         ScaleAnimateObject(p_continuePlaneScale, m_continuePlane);
+    }
+
+    private void AnimateMapTransition()
+    {
+        p_currentMapPreview.transform.position = Vector3.SmoothDamp(p_currentMapPreview.transform.position, p_mapGoToThisPosition, ref p_mapVelocity, p_mapSmoothTime);
     }
 
     private void ScaleAnimateObject(Vector3 scale, GameObject gameObject)
