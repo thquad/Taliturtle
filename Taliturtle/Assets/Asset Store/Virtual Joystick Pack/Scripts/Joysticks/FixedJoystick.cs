@@ -13,7 +13,7 @@ public class FixedJoystick : Joystick
 
     private Camera cam = new Camera();
 
-    void Start()
+    private void Start()
     {
         //This is my code, the rest is from the asset---------------
         //Transform the joystick manually on the screen
